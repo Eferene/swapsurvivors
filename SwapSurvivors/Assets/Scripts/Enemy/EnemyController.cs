@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public int currentHealth;
     public EnemyData enemyData;
-    private int currentHealth;
     private BaseAttackType attackType;
     Rigidbody2D rb;
     Transform playerTransform;
@@ -93,5 +93,15 @@ public class EnemyController : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, enemyData != null ? enemyData.attackRange : 1f);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            Debug.Log($"{enemyData.enemyName} defeated!");
+            Destroy(gameObject);
+        }
     }
 }
