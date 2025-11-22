@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b1925a18dbcc8d459173624f179d9e5, type: 3}
-  m_Name: TestMeleeEnemy
+  m_Name: TestRangedEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemyName: Test Melee Enemy
+  enemyName: Test Raycast Enemy
   baseHealth: 100
-  speed: 3
-  enemyPrefab: {fileID: 8188010001063349383, guid: 8dfd150f6cebc1b42a8de189ce55db08, type: 3}
-  attackDamage: 50
+  speed: 2
+  enemyPrefab: {fileID: 7771316006053425177, guid: 4add250fbb1f61740bc60f766dbdfce9, type: 3}
+  attackDamage: 25
   attackDamagePercentage: 10
-  attackRange: 2
+  attackRange: 5
   attackCooldown: 1

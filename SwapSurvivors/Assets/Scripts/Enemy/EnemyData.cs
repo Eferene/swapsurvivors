@@ -10,6 +10,7 @@ public class EnemyData : ScriptableObject
 
     // Attack values
     public float attackDamage;
+    public float attackDamagePercentage = 10; // +- oranını belirler.
     public float attackRange;
     public float attackCooldown;
 }

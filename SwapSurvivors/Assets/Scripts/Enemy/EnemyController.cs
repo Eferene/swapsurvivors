@@ -10,7 +10,7 @@ public class EnemyController : MonoBehaviour
 
     // Cooldown
     private float lastAttackTime;
-    private bool canAttack = true; 
+    [SerializeField] bool canAttack = true;
 
     void Start()
     {
@@ -32,7 +32,7 @@ public class EnemyController : MonoBehaviour
         // Basit saldırı
         if (attackType != null && canAttack)
         {
-            attackType.Attack(transform, GameObject.FindGameObjectWithTag("Player").transform, enemyData.attackDamage, enemyData.attackRange);
+            attackType.Attack(transform, GameObject.FindGameObjectWithTag("Player").transform, enemyData.attackDamage, enemyData.attackDamagePercentage, enemyData.attackRange);
             lastAttackTime = Time.time;
             canAttack = false;
         }
@@ -40,10 +40,24 @@ public class EnemyController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Hareket
+        switch (attackType)
+        {
+            case MeleeAttack _:
+                MoveTowardsPlayer();
+                break;
+            case RaycastAttack _:
+                KeepDistanceMovement();
+                break;
+            default:
+                break;
+        }
+    }
+
+    void MoveTowardsPlayer()
+    {
         if (playerTransform == null)
         {
-            var playerObj = GameObject.FindGameObjectWithTag("Player");
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null) playerTransform = playerObj.transform;
         }
 
@@ -52,7 +66,32 @@ public class EnemyController : MonoBehaviour
             Vector2 currentPos = rb.position;
             Vector2 targetPos = (Vector2)playerTransform.position;
             Vector2 direction = (targetPos - currentPos).normalized;
+
             rb.MovePosition(currentPos + direction * enemyData.speed * Time.fixedDeltaTime);
         }
+    }
+
+    void KeepDistanceMovement()
+    {
+        if (playerTransform == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null) playerTransform = playerObj.transform;
+        }
+
+        if (rb != null && playerTransform != null && enemyData != null && Vector2.Distance(rb.position, playerTransform.position) > enemyData.attackRange - 0.3f)
+        {
+            Vector2 currentPos = rb.position;
+            Vector2 targetPos = (Vector2)playerTransform.position;
+            Vector2 direction = (targetPos - currentPos).normalized;
+
+            rb.MovePosition(currentPos + direction * enemyData.speed * Time.fixedDeltaTime);
+        }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, enemyData != null ? enemyData.attackRange : 1f);
     }
 }
