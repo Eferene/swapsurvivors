@@ -4,7 +4,7 @@
 public class PlayerStats : ScriptableObject
 {
     // Singleton instance
-    private static PlayerStats _instance;
+    private static PlayerStats _instance = null;
     public static PlayerStats Instance
     {
         get
@@ -19,20 +19,23 @@ public class PlayerStats : ScriptableObject
     }
 
     // Fields
-    [SerializeField] private float _maxHealth = 100;
-    [SerializeField] private float _damage;
+    [SerializeField] private float _maxHealth = 100f;
+    [SerializeField] private float _damage = 50f;
+    [SerializeField] private float _damageRange = 10f;
 
     private float _health;
 
     // Properties
     public float PlayerHealth { get { return _health; } }
+    public float PlayerMaxHealth { get { return _maxHealth; } }
+    public float PlayerDamage { get { return _damage; } }
 
     public void Initialize()
     {
         _health = _maxHealth;
     }
 
-    // Health management methods
+    // --- Health management methods ---
     public void DecreaseHealth(float amount)
     {
         _health -= amount;
@@ -45,7 +48,7 @@ public class PlayerStats : ScriptableObject
         if (_health > _maxHealth) _health = _maxHealth;
     }
 
-    // Damage management methods
+    // --- Damage management methods ---
     public void DecreaseDamage(float amount)
     {
         _damage -= amount;
@@ -55,5 +58,12 @@ public class PlayerStats : ScriptableObject
     public void IncreaseDamage(float amount)
     {
         _damage += amount;
+    }
+
+    public float GiveDamage()
+    {
+        float currentDamageRange = (Random.Range(-_damageRange, _damageRange) + 100) / 100;
+        float currentDamage = _damage * currentDamageRange;
+        return currentDamage;
     }
 }

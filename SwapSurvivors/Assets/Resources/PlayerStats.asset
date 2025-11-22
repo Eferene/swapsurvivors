@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   _maxHealth: 500
-  _damage: 0
+  _damage: 50
+  _damageRange: 10
