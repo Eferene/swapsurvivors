@@ -52,6 +52,9 @@ public class EnemyController : MonoBehaviour
             case RaycastAttack _:
                 KeepDistanceMovement();
                 break;
+            case ProjectileAttack _:
+                KeepDistanceMovement();
+                break;
             default:
                 break;
         }

@@ -22,6 +22,7 @@ public class PlayerStats : ScriptableObject
     [SerializeField] private float _maxHealth = 100f;
     [SerializeField] private float _damage = 50f;
     [SerializeField] private float _damageRange = 10f;
+    [SerializeField] private float _speed = 5f;
 
     private float _health;
 
@@ -29,6 +30,7 @@ public class PlayerStats : ScriptableObject
     public float PlayerHealth { get { return _health; } }
     public float PlayerMaxHealth { get { return _maxHealth; } }
     public float PlayerDamage { get { return _damage; } }
+    public float PlayerSpeed { get { return _speed; } }
 
     public void Initialize()
     {

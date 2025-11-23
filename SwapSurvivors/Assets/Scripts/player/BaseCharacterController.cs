@@ -7,13 +7,14 @@ public abstract class BaseCharacterController : MonoBehaviour
     protected Vector2 moveInput;
     protected EnemyController enemyController;
 
-    [SerializeField] protected float playerSpeed = 5.0f;
+    [SerializeField] protected float playerSpeed;
     [SerializeField] protected float attackCooldown = 1.0f;
 
     protected float lastAttackTime = 0f;
 
     protected virtual void Awake()
     {
+        playerSpeed = PlayerStats.Instance.PlayerSpeed;
         rb = GetComponent<Rigidbody2D>();
         controls = new InputActions();
 
