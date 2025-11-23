@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MeleeAttack : BaseAttackType
 {
-    public override void Attack(Transform enemyTransform, Transform targetTransform, float damage, float damagePercentage, float range)
+    public override bool Attack(Transform enemyTransform, Transform targetTransform, float damage, float damagePercentage, float range)
     {
         if(Vector3.Distance(enemyTransform.position, targetTransform.position) <= range) // Menzil kontrolü
         {
@@ -11,6 +11,8 @@ public class MeleeAttack : BaseAttackType
 
             PlayerStats.Instance.DecreaseHealth(dmg);
             Debug.Log("| " + dmg + " | Player hit! Current Health: " + PlayerStats.Instance.PlayerHealth);
+            return true;
         }
+        return false;
     }
 }

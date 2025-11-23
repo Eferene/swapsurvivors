@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3576308760594053073}
   - component: {fileID: 8720751563596647136}
   - component: {fileID: 6497590431863721205}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Raycast-Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -187,7 +187,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   enemyData: {fileID: 11400000, guid: 794923ec9a2a87645885bfeab9e9231a, type: 2}
+  lastAttackTime: 0
   canAttack: 1
+  isAttacking: 0
 --- !u!114 &6497590431863721205
 MonoBehaviour:
   m_ObjectHideFlags: 0

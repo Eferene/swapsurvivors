@@ -9,8 +9,9 @@ public class EnemyController : MonoBehaviour
     Transform playerTransform;
 
     // Cooldown
-    private float lastAttackTime;
+    [SerializeField] float lastAttackTime;
     [SerializeField] bool canAttack = true;
+    public bool isAttacking = false;
 
     void Start()
     {
@@ -30,11 +31,14 @@ public class EnemyController : MonoBehaviour
         }
 
         // Basit saldırı
-        if (attackType != null && canAttack)
+        if (attackType != null && canAttack && !isAttacking)
         {
-            attackType.Attack(transform, GameObject.FindGameObjectWithTag("Player").transform, enemyData.attackDamage, enemyData.attackDamagePercentage, enemyData.attackRange);
-            lastAttackTime = Time.time;
-            canAttack = false;
+            bool attackSuccessful = attackType.Attack(transform, GameObject.FindGameObjectWithTag("Player").transform, enemyData.attackDamage, enemyData.attackDamagePercentage, enemyData.attackRange);
+            if(attackSuccessful)
+            {
+                lastAttackTime = Time.time;
+                canAttack = false;
+            }
         }
     }
 
@@ -81,6 +85,8 @@ public class EnemyController : MonoBehaviour
 
         if (rb != null && playerTransform != null && enemyData != null && Vector2.Distance(rb.position, playerTransform.position) > enemyData.attackRange - 0.3f)
         {
+            if(isAttacking) return;
+
             Vector2 currentPos = rb.position;
             Vector2 targetPos = (Vector2)playerTransform.position;
             Vector2 direction = (targetPos - currentPos).normalized;
@@ -104,6 +110,4 @@ public class EnemyController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, enemyData != null ? enemyData.attackRange : 1f);
     }
-
-
 }
