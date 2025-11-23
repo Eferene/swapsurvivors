@@ -1,26 +1,41 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : BaseCharacterController
 {
-    Rigidbody2D rb;
-    InputActions controls;
+    [Header("Tırpan Özellikleri")]
+    [SerializeField] private float scyhteRange = 5f;
+    [SerializeField] private LayerMask enemyLayer;
 
-    [SerializeField] private float playerSpeed = 5.0f;
-    Vector2 moveInput;
-
-    private void OnEnable() => controls.Player.Enable();
-    private void OnDisable() => controls.Player.Disable();
-
-    private void Awake()
+    protected override void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        controls = new InputActions();
-
-        controls.Player.Move.performed += ctx => { moveInput = ctx.ReadValue<Vector2>(); };
-        controls.Player.Move.canceled += ctx => { moveInput = Vector2.zero; };
+        base.Awake();
+        base.attackCooldown = 1.0f; // Tırpan için saldırı hızı
     }
-    void FixedUpdate()
+
+    protected override void Attack()
     {
-        rb.linearVelocity = new Vector2(moveInput.x * playerSpeed, moveInput.y * playerSpeed);
+        Debug.Log("Tırpan vurdu!");
+
+        // Yakındaki düşmanları bul
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(
+            transform.position,
+            scyhteRange,
+            enemyLayer
+        );
+
+        foreach (var dusman in enemies)
+        {
+            float hasar = PlayerStats.Instance.GiveDamage();
+            Debug.Log($"{dusman.name} tırpandan {hasar} hasar aldı!");
+
+            enemyController = dusman.GetComponent<EnemyController>();
+            enemyController.TakeDamage(hasar);
+        }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, scyhteRange);
     }
 }

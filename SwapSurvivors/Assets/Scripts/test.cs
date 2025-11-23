@@ -10,7 +10,7 @@ public class test : MonoBehaviour
 
     IEnumerator enumerator(float f)
     {
-        Debug.Log(PlayerStats.Instance.GiveDamage());
+        //Debug.Log(PlayerStats.Instance.GiveDamage());
         yield return new WaitForSeconds(f);
     }
 }
