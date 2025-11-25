@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerStats", menuName = "Stats/PlayerStats")]
 public class PlayerStats : ScriptableObject
@@ -32,6 +33,11 @@ public class PlayerStats : ScriptableObject
     [Header("Movement")]
     [SerializeField] private float _speed = 5f;
 
+    [Header("Stats")]
+    [SerializeField] private int _level = 1;  
+    [SerializeField] private int _score = 0;
+    [SerializeField] private int _wave = 0;
+
     // --- Properties ---
     public float PlayerHealth => _health; // Yalnızca get için lambda ifadesi kullanılabilir
     public float PlayerMaxHealth => _maxHealth;
@@ -39,6 +45,9 @@ public class PlayerStats : ScriptableObject
     public float PlayerSpeed => _speed;
     public float AttackCooldown => _attackCooldown;
     public float AttackRange => _attackRange;
+    public int PlayerLevel => _level;
+    public int PlayerScore => _score;
+    public int CurrentWave => _wave;
 
     // --- Initialization ---
     public void Initialize()

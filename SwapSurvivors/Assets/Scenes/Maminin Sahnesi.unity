@@ -328,9 +328,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59ad094fa4e5bbc4a8466fcb815f6f8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  playerSpeed: 5
-  attackCooldown: 1
-  scyhteRange: 5
+  cooldownMultiplier: 1
+  damageMultiplier: 1
+  speedMultiplier: 1
+  rangeMultiplier: 5
+  offset: 0
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128

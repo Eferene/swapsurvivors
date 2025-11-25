@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Test Homing Missile Enemy
   baseHealth: 100
-  speed: 2
+  speed: 3
   enemyPrefab: {fileID: 1984127840723145678, guid: da60f3f90f4e30f45b27b883021afaf1, type: 3}
   attackDamage: 25
   attackDamagePercentage: 10
   attackRange: 9
-  attackCooldown: 1
+  attackCooldown: 2
   projectilePrefab: {fileID: 3082521190359396072, guid: a680b0ea1ab17274f9541b0d463ab6e2, type: 3}
   projectileSpeed: 4
