@@ -119,4 +119,8 @@ public class PlayerStats : ScriptableObject
     }
 
     // --- Score and Level Management Methods ---
+    public void AddScore(int amount)
+    {
+        _score += amount;
+    }
 }

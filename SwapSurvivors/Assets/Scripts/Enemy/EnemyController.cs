@@ -103,7 +103,12 @@ public class EnemyController : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
-            Debug.Log($"{enemyData.enemyName} defeated!");
+            float min = enemyData.scoreGain * (1f - enemyData.scoreGainPercentage / 100f);
+            float max = enemyData.scoreGain * (1f + enemyData.scoreGainPercentage / 100f);
+            float fScoreGain = Random.Range(min, max);
+            int scoreGain = Mathf.RoundToInt(fScoreGain);
+            PlayerStats.Instance.AddScore(scoreGain);
+            GameObject.FindGameObjectWithTag("UIManager").GetComponent<UIController>().UpdateScoreText(PlayerStats.Instance.PlayerScore);
             Destroy(gameObject);
         }
     }

@@ -329,9 +329,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   cooldownMultiplier: 1
+  healthMultiplier: 1
   damageMultiplier: 1
-  speedMultiplier: 1
   rangeMultiplier: 5
+  speedMultiplier: 1
   offset: 0
   enemyLayer:
     serializedVersion: 2
@@ -672,9 +673,10 @@ GameObject:
   - component: {fileID: 651719086}
   - component: {fileID: 651719085}
   - component: {fileID: 651719084}
+  - component: {fileID: 651719088}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: UIManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -764,6 +766,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &651719088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651719083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b92acfd701a3f74e8872f682bfc3b07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  scoreText: {fileID: 1602204319}
 --- !u!1 &728615936
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,6 +1780,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: HomingMissile-Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 3286586083291820223, guid: da60f3f90f4e30f45b27b883021afaf1, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3286586083291820223, guid: da60f3f90f4e30f45b27b883021afaf1, type: 3}
+      propertyPath: m_Color.g
+      value: 0.44933927
+      objectReference: {fileID: 0}
+    - target: {fileID: 3286586083291820223, guid: da60f3f90f4e30f45b27b883021afaf1, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5551982708143988155, guid: da60f3f90f4e30f45b27b883021afaf1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.95
@@ -1804,6 +1831,34 @@ PrefabInstance:
     - target: {fileID: 5551982708143988155, guid: da60f3f90f4e30f45b27b883021afaf1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7945321904559275346, guid: da60f3f90f4e30f45b27b883021afaf1, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.w
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7945321904559275346, guid: da60f3f90f4e30f45b27b883021afaf1, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7945321904559275346, guid: da60f3f90f4e30f45b27b883021afaf1, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.y
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7945321904559275346, guid: da60f3f90f4e30f45b27b883021afaf1, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.z
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7945321904559275346, guid: da60f3f90f4e30f45b27b883021afaf1, type: 3}
+      propertyPath: m_SpriteTilingProperty.drawMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7945321904559275346, guid: da60f3f90f4e30f45b27b883021afaf1, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7945321904559275346, guid: da60f3f90f4e30f45b27b883021afaf1, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
