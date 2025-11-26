@@ -22,11 +22,17 @@ public class ScyhteCharacter : BaseCharacterController
     private bool isRight = true;
     private Vector3 attackPos;
 
+    // --- Visuals ---
+    private GameObject semiCircle1;
+    private GameObject semiCircle2;
+
     // --- Unity Methods ---
     protected override void Awake()
     {
         base.Awake();
         playerSpeed = ScyhteSpeed;
+        semiCircle1 = transform.GetChild(0).gameObject;
+        semiCircle2 = transform.GetChild(1).gameObject;
     }
 
     protected override void Attack()
@@ -45,6 +51,17 @@ public class ScyhteCharacter : BaseCharacterController
 
             if (isRight == isEnemyOnRight)
                 ApplyDamage(enemy, PlayerStats.Instance.GiveDamage(ScyhteDamage));
+        }
+
+        if (isRight)
+        {
+            semiCircle1.SetActive(true);
+            semiCircle2.SetActive(false);
+        }
+        else
+        {
+            semiCircle1.SetActive(false);
+            semiCircle2.SetActive(true);
         }
 
         isRight = !isRight;

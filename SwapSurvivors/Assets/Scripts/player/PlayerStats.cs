@@ -1,4 +1,5 @@
-﻿using Unity.VisualScripting;
+﻿using System.Security.Cryptography.X509Certificates;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerStats", menuName = "Stats/PlayerStats")]
@@ -21,54 +22,64 @@ public class PlayerStats : ScriptableObject
 
     // --- Fields ---
     [Header("Base Stats")]
-    [SerializeField] private float _baseMaxHealth = 100f;
-    [SerializeField] private float _baseDamage = 50f;
-    [SerializeField] private float _baseAttackCooldown = 1f;
-    [SerializeField] private float _baseAttackRange = 1f;
-    [SerializeField] private float _baseSpeed = 5f;
+    [SerializeField] private const float BaseAttackCooldown = 1f;
+    [SerializeField] private const float BaseMaxHealth = 100f;
+    [SerializeField] private const float BaseDamage = 50f;
+    [SerializeField] private const float BaseRange = 1f;
+    [SerializeField] private const float BaseSpeed = 5f;
 
+    private float _attackCooldown;
     private float _maxHealth;
     private float _health;
     private float _damage;
-    private float _attackCooldown;
-    private float _attackRange;
+    private float _range;
     private float _speed;
+    private float _characterLevel;
 
     [Header("Combat")]
-    [SerializeField] private float _damageRange = 10f; // Hasar dalgalanma yüzdesi
+    [SerializeField] private const float _damageRange = 10f; // Hasar dalgalanma yüzdesi
 
     [Header("Upgrades")]
-    [SerializeField] private float upgradesCooldownMultiplier = 1.0f;
-    [SerializeField] private float upgradesDamageMultiplier = 1.0f;
-    [SerializeField] private float upgradesRangeMultiplier = 1.0f;
-    [SerializeField] private float upgradesSpeedMultiplier = 1.0f;
-    [SerializeField] private float upgradesHealthMultiplier = 1.0f;
+    [SerializeField] private float _upgradesCooldownMultiplier = 1.0f;
+    [SerializeField] private float _upgradesHealthMultiplier = 1.0f;
+    [SerializeField] private float _upgradesDamageMultiplier = 1.0f;
+    [SerializeField] private float _upgradesRangeMultiplier = 1.0f;
+    [SerializeField] private float _upgradesSpeedMultiplier = 1.0f;
 
     [Header("Stats")]
-    [SerializeField] private int _level = 1;
     [SerializeField] private int _score = 0;
-    [SerializeField] private int _wave = 0;
+    [SerializeField] private int _wave = 1;
 
     // --- Properties ---
-    public float PlayerHealth => _health; // Yalnızca get için lambda ifadesi kullanılabilir
+    public float AttackCooldown => _attackCooldown;
+    public float CharacterLevel => _characterLevel;
     public float PlayerMaxHealth => _maxHealth;
+    public float PlayerHealth => _health; // Yalnızca get için lambda ifadesi kullanılabilir
     public float PlayerDamage => _damage;
     public float PlayerSpeed => _speed;
-    public float AttackCooldown => _attackCooldown;
-    public float AttackRange => _attackRange;
-    public int PlayerLevel => _level;
+    public float AttackRange => _range;
     public int PlayerScore => _score;
     public int CurrentWave => _wave;
 
     // --- Initialization ---
     public void Initialize()
     {
-        _maxHealth = _baseMaxHealth;
+        _maxHealth = BaseMaxHealth;
         _health = _maxHealth;
-        _damage = _baseDamage;
-        _attackCooldown = _baseAttackCooldown;
-        _attackRange = _baseAttackRange;
-        _speed = _baseSpeed;
+        _damage = BaseDamage;
+        _attackCooldown = BaseAttackCooldown;
+        _range = BaseRange;
+        _speed = BaseSpeed;
+
+        _upgradesCooldownMultiplier = 1.0f;
+        _upgradesHealthMultiplier = 1.0f;
+        _upgradesDamageMultiplier = 1.0f;
+        _upgradesRangeMultiplier = 1.0f;
+        _upgradesSpeedMultiplier = 1.0f;
+
+        _characterLevel = 1;
+        _score = 0;
+        _wave = 1;
     }
 
     // --- Health Management Methods ---
@@ -106,16 +117,16 @@ public class PlayerStats : ScriptableObject
     // --- Upgrade Management Methods ---
     public void ApplyUpgrades(float damageMultiplier, float rangeMultiplier, float cooldownMultiplier, float speedMultiplier)
     {
-        upgradesDamageMultiplier *= damageMultiplier;
-        upgradesRangeMultiplier *= rangeMultiplier;
-        upgradesCooldownMultiplier *= cooldownMultiplier;
-        upgradesSpeedMultiplier *= speedMultiplier;
+        _upgradesDamageMultiplier *= damageMultiplier;
+        _upgradesRangeMultiplier *= rangeMultiplier;
+        _upgradesCooldownMultiplier *= cooldownMultiplier;
+        _upgradesSpeedMultiplier *= speedMultiplier;
 
-        _damage = _baseDamage * upgradesDamageMultiplier;
-        _attackRange = _baseAttackRange * upgradesRangeMultiplier;
-        _attackCooldown = _baseAttackCooldown / upgradesCooldownMultiplier;
-        _speed = _baseSpeed * upgradesSpeedMultiplier;
-        _maxHealth = _baseMaxHealth * upgradesHealthMultiplier;
+        _damage = BaseDamage * _upgradesDamageMultiplier;
+        _range = BaseRange * _upgradesRangeMultiplier;
+        _attackCooldown = BaseAttackCooldown / _upgradesCooldownMultiplier;
+        _speed = BaseSpeed * _upgradesSpeedMultiplier;
+        _maxHealth = BaseMaxHealth * _upgradesHealthMultiplier;
     }
 
     // --- Score and Level Management Methods ---
