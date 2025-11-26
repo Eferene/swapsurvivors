@@ -22,3 +22,4 @@ MonoBehaviour:
   attackCooldown: 1
   projectilePrefab: {fileID: 3082521190359396072, guid: 469cb8ed03a0ab043bd19ba2f7d114cc, type: 3}
   projectileSpeed: 8
+  scoreGain: 50

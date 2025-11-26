@@ -18,4 +18,8 @@ public class EnemyData : ScriptableObject
     [Header("Projectile Info")]
     public GameObject projectilePrefab;
     public float projectileSpeed;
+
+    [Header("Stats Values")]
+    public int scoreGain;
+    public float scoreGainPercentage = 10; // +- oranını belirler.
 }
