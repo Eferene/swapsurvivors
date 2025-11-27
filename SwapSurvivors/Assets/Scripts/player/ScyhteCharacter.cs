@@ -26,16 +26,12 @@ public class ScyhteCharacter : BaseCharacterController
     [Header("Visuals")]
     [SerializeField] private Animator scytheAnimator; // Tırpanın Animator'ını buraya sürükle
     [SerializeField] private Transform scytheVisualTransform; // Tırpan objesinin Transform'u (yön çevirmek için)
-    private GameObject semiCircle1;
-    private GameObject semiCircle2;
 
     // --- Unity Methods ---
     protected override void Awake()
     {
         base.Awake();
         playerSpeed = ScytheSpeed;
-        semiCircle1 = transform.GetChild(0).gameObject;
-        semiCircle2 = transform.GetChild(1).gameObject;
     }
 
     protected override void Attack()
@@ -44,11 +40,13 @@ public class ScyhteCharacter : BaseCharacterController
 
         attackPos = transform.position + new Vector3(currentOffset, 0f, 0f);
 
+        // Tırpan görselini yönlendir
         Vector3 visualScale = scytheVisualTransform.localScale;
         visualScale.x = isRight ? Mathf.Abs(visualScale.x) : -Mathf.Abs(visualScale.x);
         scytheVisualTransform.localScale = visualScale;
 
-        scytheVisualTransform.localPosition = new Vector3(currentOffset, 0f, 0f);
+        scytheVisualTransform.position = attackPos;
+        Debug.Log(attackPos);
 
         scytheAnimator.SetTrigger("Attack");
 
@@ -64,17 +62,6 @@ public class ScyhteCharacter : BaseCharacterController
 
             if (isRight == isEnemyOnRight)
                 ApplyDamage(enemy, PlayerStats.Instance.GiveDamage(ScytheDamage));
-        }
-
-        if (isRight)
-        {
-            semiCircle1.SetActive(true);
-            semiCircle2.SetActive(false);
-        }
-        else
-        {
-            semiCircle1.SetActive(false);
-            semiCircle2.SetActive(true);
         }
 
         isRight = !isRight;
