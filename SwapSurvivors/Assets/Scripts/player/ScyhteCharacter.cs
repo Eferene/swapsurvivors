@@ -23,6 +23,9 @@ public class ScyhteCharacter : BaseCharacterController
     private Vector3 attackPos;
 
     // --- Visuals ---
+    [Header("Visuals")]
+    [SerializeField] private Animator scytheAnimator; // Tırpanın Animator'ını buraya sürükle
+    [SerializeField] private Transform scytheVisualTransform; // Tırpan objesinin Transform'u (yön çevirmek için)
     private GameObject semiCircle1;
     private GameObject semiCircle2;
 
@@ -37,7 +40,17 @@ public class ScyhteCharacter : BaseCharacterController
 
     protected override void Attack()
     {
-        attackPos = transform.position + new Vector3(isRight ? offset : -offset, 0f, 0f);
+        float currentOffset = isRight ? offset : -offset;
+
+        attackPos = transform.position + new Vector3(currentOffset, 0f, 0f);
+
+        Vector3 visualScale = scytheVisualTransform.localScale;
+        visualScale.x = isRight ? Mathf.Abs(visualScale.x) : -Mathf.Abs(visualScale.x);
+        scytheVisualTransform.localScale = visualScale;
+
+        scytheVisualTransform.localPosition = new Vector3(currentOffset, 0f, 0f);
+
+        scytheAnimator.SetTrigger("Attack");
 
         // Yakındaki düşmanları bul
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos, ScytheRange, enemyLayer);
