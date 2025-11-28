@@ -119,6 +119,52 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &235671671
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 235671673}
+  - component: {fileID: 235671672}
+  m_Layer: 0
+  m_Name: Transform Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &235671672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235671671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32528c80723becd4e8489c922561a0ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterTransformManager
+  scytheCharacter: {fileID: 2108430206016549672, guid: 006ff7242a8cbb048b232e36ee5fa6c8, type: 3}
+  shotgunCharacter: {fileID: 3934399534572532902, guid: 79be40db6ead75c4c8c1450a226c84f9, type: 3}
+--- !u!4 &235671673
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235671671}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 240.66866, y: 161.89877, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,11 +249,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &687386901 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7876041246156826853, guid: 006ff7242a8cbb048b232e36ee5fa6c8, type: 3}
-  m_PrefabInstance: {fileID: 563031666649065385}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &829065640
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,10 +578,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScyhteCharacter
       objectReference: {fileID: 0}
-    - target: {fileID: 4286113036971727745, guid: 006ff7242a8cbb048b232e36ee5fa6c8, type: 3}
-      propertyPath: m_Name
-      value: Scythe
-      objectReference: {fileID: 0}
     - target: {fileID: 4503722777682798489, guid: 006ff7242a8cbb048b232e36ee5fa6c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -579,38 +616,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4503722777682798489, guid: 006ff7242a8cbb048b232e36ee5fa6c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7633658507645141816, guid: 006ff7242a8cbb048b232e36ee5fa6c8, type: 3}
-      propertyPath: rangeMultiplier
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7633658507645141816, guid: 006ff7242a8cbb048b232e36ee5fa6c8, type: 3}
-      propertyPath: scytheTransform
-      value: 
-      objectReference: {fileID: 687386901}
-    - target: {fileID: 7633658507645141816, guid: 006ff7242a8cbb048b232e36ee5fa6c8, type: 3}
-      propertyPath: cooldownMultiplier
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7876041246156826853, guid: 006ff7242a8cbb048b232e36ee5fa6c8, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7876041246156826853, guid: 006ff7242a8cbb048b232e36ee5fa6c8, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7876041246156826853, guid: 006ff7242a8cbb048b232e36ee5fa6c8, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7876041246156826853, guid: 006ff7242a8cbb048b232e36ee5fa6c8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7876041246156826853, guid: 006ff7242a8cbb048b232e36ee5fa6c8, type: 3}
-      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -723,6 +728,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4408590383577734852, guid: cb7de294d7df9754ea477aeda57d7710, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 235671672}
     - target: {fileID: 6894897672948670574, guid: cb7de294d7df9754ea477aeda57d7710, type: 3}
       propertyPath: m_Name
       value: All Canvases
@@ -744,3 +753,4 @@ SceneRoots:
   - {fileID: 829065642}
   - {fileID: 6455655234177115693}
   - {fileID: 563031666649065385}
+  - {fileID: 235671673}

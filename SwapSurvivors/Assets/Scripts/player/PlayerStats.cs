@@ -28,17 +28,19 @@ public class PlayerStats : ScriptableObject
 
     private float _attackCooldown;
     private float _maxHealth;
+    private float _baseHealth;
     private float _health;
     private float _damage;
     private float _range;
     private float _speed;
+
     private float _characterLevel;
 
     [Header("Combat")]
     [SerializeField] private float _damageRange = 10f; // Hasar dalgalanma yüzdesi
 
     [Header("Upgrades")]
-    [SerializeField] private float _upgradesCooldownMultiplier = 1.0f;
+    [SerializeField] private float _upgradesCooldownPercantage = 0f;
     [SerializeField] private float _upgradesHealthMultiplier = 1.0f;
     [SerializeField] private float _upgradesDamageMultiplier = 1.0f;
     [SerializeField] private float _upgradesRangeMultiplier = 1.0f;
@@ -59,25 +61,20 @@ public class PlayerStats : ScriptableObject
     public int PlayerScore => _score;
     public int CurrentWave => _wave;
 
-    public float UpgradesCooldownMultiplier => _upgradesCooldownMultiplier;
-    public float UpgradesHealthMultiplier => _upgradesHealthMultiplier;
-    public float UpgradesDamageMultiplier => _upgradesDamageMultiplier;
-    public float UpgradesRangeMultiplier => _upgradesRangeMultiplier;
-    public float UpgradesSpeedMultiplier => _upgradesSpeedMultiplier;
-
     // --- Initialization ---
     public void Initialize()
     {
         Debug.Log("PlayerStats Initialized");
 
         _maxHealth = BaseMaxHealth;
+        _baseHealth = BaseMaxHealth;
         _health = _maxHealth;
         _damage = BaseDamage;
         _attackCooldown = BaseAttackCooldown;
         _range = BaseRange;
         _speed = BaseSpeed;
 
-        _upgradesCooldownMultiplier = 1.0f;
+        _upgradesCooldownPercantage = 0f;
         _upgradesHealthMultiplier = 1.0f;
         _upgradesDamageMultiplier = 1.0f;
         _upgradesRangeMultiplier = 1.0f;
@@ -102,15 +99,14 @@ public class PlayerStats : ScriptableObject
     }
 
     // --- Damage Management Methods ---
-    public void DecreaseDamage(float amount) // hasar düşürme
+    public void DecreaseDamageMultiplier(float amount) // hasar düşürme
     {
-        _damage -= amount;
-        if (_damage < 0) _damage = 0;
+        _upgradesDamageMultiplier -= amount;
     }
 
     public void IncreaseDamage(float amount) // hasar artırma
     {
-        _damage += amount;
+        _upgradesDamageMultiplier += amount;
     }
 
     public float GiveDamage(float damage) // hasar verme
@@ -121,16 +117,16 @@ public class PlayerStats : ScriptableObject
     }
 
     // --- Upgrade Management Methods ---
-    public void ApplyUpgrades(float damageMultiplier, float rangeMultiplier, float cooldownMultiplier, float speedMultiplier)
+    public void ApplyUpgrades(float damageMultiplier, float rangeMultiplier, float cooldownPercentage, float speedMultiplier)
     {
         _upgradesDamageMultiplier *= damageMultiplier;
         _upgradesRangeMultiplier *= rangeMultiplier;
-        _upgradesCooldownMultiplier *= cooldownMultiplier;
+        _upgradesCooldownPercantage += cooldownPercentage;
         _upgradesSpeedMultiplier *= speedMultiplier;
 
         _damage = BaseDamage * _upgradesDamageMultiplier;
         _range = BaseRange * _upgradesRangeMultiplier;
-        _attackCooldown = BaseAttackCooldown / _upgradesCooldownMultiplier;
+        _attackCooldown = BaseAttackCooldown - (BaseAttackCooldown * (_upgradesCooldownPercantage / 100));
         _speed = BaseSpeed * _upgradesSpeedMultiplier;
         _maxHealth = BaseMaxHealth * _upgradesHealthMultiplier;
     }

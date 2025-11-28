@@ -171,17 +171,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59ad094fa4e5bbc4a8466fcb815f6f8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  cooldownMultiplier: 1
+  cooldownPercantage: 10
   healthMultiplier: 1
   damageMultiplier: 1
-  rangeMultiplier: 5
+  rangeMultiplier: 4
   speedMultiplier: 1
   offset: 1
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
   scytheAnimator: {fileID: 8262389396236582481}
-  scytheVisualTransform: {fileID: 7876041246156826853}
+  scytheTransform: {fileID: 4286113036971727745}
 --- !u!114 &7809938715700787236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,13 +223,14 @@ GameObject:
   - component: {fileID: 7876041246156826853}
   - component: {fileID: 2896658235688565509}
   - component: {fileID: 8262389396236582481}
+  - component: {fileID: 8420123064697593835}
   m_Layer: 0
-  m_Name: "t\u0131rm\u0131k_0"
+  m_Name: Scythe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7876041246156826853
 Transform:
   m_ObjectHideFlags: 0
@@ -238,9 +239,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4286113036971727745}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.29906666, y: -0.13129401, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.5}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.72, y: -0, z: 0}
+  m_LocalScale: {x: 4, y: 4, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4503722777682798489}
@@ -325,3 +326,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8420123064697593835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4286113036971727745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57030263c0105324d8d71a64cb16e73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HideScytheAnim

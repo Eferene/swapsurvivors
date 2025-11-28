@@ -25,6 +25,7 @@ public class HealthBarManager : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (playerRb == null) playerRb = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
         healthBarTransform.transform.position =
             new Vector3(playerRb.transform.position.x, playerRb.transform.position.y + yOffset, playerRb.transform.position.z);
     }

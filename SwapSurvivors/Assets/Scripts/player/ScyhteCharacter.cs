@@ -3,7 +3,7 @@
 public class ScyhteCharacter : BaseCharacterController
 {
     [Header("Tırpan Özellikleri")]
-    [SerializeField] private float cooldownMultiplier = 1.0f;   // Tırpan için saldırı hızı çarpanı
+    [SerializeField] private float cooldownPercantage = 0f;     // Tırpan için saldırı hızı yüzdesi
     [SerializeField] private float healthMultiplier = 1.0f;     // Tırpan karakteri için hız
     [SerializeField] private float damageMultiplier = 1.0f;     // Tırpan için hasar çarpanı
     [SerializeField] private float rangeMultiplier = 5.0f;      // Tırpan için menzil çarpanı
@@ -12,8 +12,8 @@ public class ScyhteCharacter : BaseCharacterController
     [SerializeField] private LayerMask enemyLayer;
 
     // Her çağrıldığında güncellenmesi için property olarak tanımlandı
-    private float ScytheCooldown => PlayerStats.Instance.AttackCooldown * cooldownMultiplier;
-    private float ScytheHealth => PlayerStats.Instance.PlayerMaxHealth * healthMultiplier;
+    private float ScytheCooldown => PlayerStats.Instance.AttackCooldown - (PlayerStats.Instance.AttackCooldown * (cooldownPercantage / 100));
+    private float ScytheMaxHealth => PlayerStats.Instance.PlayerMaxHealth * healthMultiplier;
     private float ScytheDamage => PlayerStats.Instance.PlayerDamage * damageMultiplier;
     private float ScytheRange => PlayerStats.Instance.AttackRange * rangeMultiplier;
     private float ScytheSpeed => PlayerStats.Instance.PlayerSpeed * speedMultiplier;    // Tırpan karakteri için hız
@@ -25,7 +25,7 @@ public class ScyhteCharacter : BaseCharacterController
     // --- Visuals ---
     [Header("Visuals")]
     [SerializeField] private Animator scytheAnimator; // Tırpanın Animator'ını buraya sürükle
-    [SerializeField] private Transform scytheTransform; // Tırpan objesinin Transform'u (yön çevirmek için)
+    [SerializeField] private GameObject scytheTransform; // Tırpan objesinin Transform'u (yön çevirmek için)
     Vector3 scytheScale;
 
     // --- Unity Methods ---
@@ -67,12 +67,13 @@ public class ScyhteCharacter : BaseCharacterController
         attackPos = transform.position + new Vector3(currentOffset, 0f, 0f);
 
         // Scythe animation yönünü ayarlar
-        scytheTransform.position = attackPos;
+        scytheTransform.transform.position = attackPos;
 
-        scytheScale = scytheTransform.localScale * ScytheRange;
+        scytheScale = new Vector3(ScytheRange, ScytheRange);
         scytheScale.x = isRight ? Mathf.Abs(scytheScale.x) : -Mathf.Abs(scytheScale.x);
-        scytheTransform.localScale = scytheScale;
+        scytheTransform.transform.localScale = scytheScale;
 
+        scytheTransform.gameObject.SetActive(true);
         scytheAnimator.SetTrigger("Attack");
 
         // Yakındaki düşmanları bulur
