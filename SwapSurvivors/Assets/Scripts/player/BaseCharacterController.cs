@@ -5,6 +5,7 @@ public abstract class BaseCharacterController : MonoBehaviour
 {
     // --- Components ---
     private Rigidbody2D rb;
+    private SpriteRenderer spriteRenderer;
     private InputActions controls;
 
     // --- Movement ---
@@ -18,6 +19,7 @@ public abstract class BaseCharacterController : MonoBehaviour
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         controls = new InputActions();
 
         controls.Player.Move.performed += ctx => { moveInput = ctx.ReadValue<Vector2>(); };
@@ -34,6 +36,11 @@ public abstract class BaseCharacterController : MonoBehaviour
 
     protected virtual void ApplyAttack()
     {
+        if (moveInput.x > 0)
+            spriteRenderer.flipX = false;
+        else if (moveInput.x < 0)
+            spriteRenderer.flipX = true;
+
         // Saldırı cooldown kontrolü
         if (Time.time >= lastAttackTime + GetCooldown())
         {

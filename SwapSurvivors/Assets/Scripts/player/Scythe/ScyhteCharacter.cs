@@ -24,19 +24,21 @@ public class ScyhteCharacter : BaseCharacterController
     private Vector3 attackPos;
 
     private Collider2D[] hitBuffer = new Collider2D[100];
+    ContactFilter2D filter = new ContactFilter2D();
 
     // --- Visuals ---
     [Header("Visuals")]
-    [SerializeField] private Animator scytheAnimator; // Tırpanın Animator'ını buraya sürükle
-    [SerializeField] private GameObject scytheTransform; // Tırpan objesinin Transform'u (yön çevirmek için)
-    [SerializeField] private Transform staticScythe;
+    [SerializeField] private Animator scytheAnimator; // Tırpanın Animatorü
+    [SerializeField] private GameObject scythe;       // Tırpan objesi
+    [SerializeField] private Transform staticScythe;  // Seviye 3 için dönen tırpan objesi
     Vector3 scytheScale;
 
     // --- Unity Methods ---
     protected override void Awake()
     {
         base.Awake();
-        playerSpeed = ScytheSpeed;
+        filter.SetLayerMask(enemyLayer);
+        filter.useTriggers = true;
     }
 
     protected override void Update()
@@ -46,6 +48,12 @@ public class ScyhteCharacter : BaseCharacterController
         {
             LevelThreeAttack();
         }
+    }
+
+    protected override void FixedUpdate()
+    {
+        playerSpeed = ScytheSpeed;
+        base.FixedUpdate();
     }
 
     protected override void Attack()
@@ -76,20 +84,15 @@ public class ScyhteCharacter : BaseCharacterController
         attackPos = transform.position + new Vector3(currentOffset, 0f, 0f);
 
         // Tırpanı pozisyona koy
-        scytheTransform.transform.position = attackPos;
+        scythe.transform.position = attackPos;
 
         // Yön skalası
         scytheScale = new Vector3(ScytheRange, ScytheRange);
         scytheScale.x = isRight ? Mathf.Abs(scytheScale.x) : -Mathf.Abs(scytheScale.x);
-        scytheTransform.transform.localScale = scytheScale;
+        scythe.transform.localScale = scytheScale;
 
         // Görseli aktif et
-        scytheTransform.gameObject.SetActive(true);
-
-        // Bu struct stack'te oluşur, yani new'lemek performans yemez (GC free).
-        ContactFilter2D filter = new ContactFilter2D();
-        filter.SetLayerMask(enemyLayer);
-        filter.useTriggers = true;
+        scythe.gameObject.SetActive(true);
 
         // Yakındaki düşmanları bul
         int hitCount = Physics2D.OverlapCircle(attackPos, ScytheRange, filter, hitBuffer);
@@ -98,7 +101,7 @@ public class ScyhteCharacter : BaseCharacterController
         {
             var enemy = hitBuffer[i];
             if (enemy == null) continue;
-             
+
             Vector2 dir = enemy.transform.position - transform.position;
             dir.Normalize();
 
@@ -155,12 +158,6 @@ public class ScyhteCharacter : BaseCharacterController
             enemyController.TakeDamage(damage);
             Debug.Log($"{enemy.name} gelen {damage} hasarı yedi.");
         }
-    }
-
-    protected override void FixedUpdate()
-    {
-        playerSpeed = ScytheSpeed;
-        base.FixedUpdate();
     }
 
     private void OnDrawGizmosSelected()

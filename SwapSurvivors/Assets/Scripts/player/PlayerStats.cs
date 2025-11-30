@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerStats", menuName = "Stats/PlayerStats")]
 public class PlayerStats : ScriptableObject
@@ -111,10 +112,10 @@ public class PlayerStats : ScriptableObject
         _upgradesDamageMultiplier += amount;
     }
 
-    public float GiveDamage(float damage) // hasar verme
+    public int GiveDamage(float damage) // hasar verme
     {
-        float multiplier = (Random.Range(-_damageRange, _damageRange) + 100) / 100;
-        float currentDamage = damage * multiplier; // Nihai hasar
+        float multiplier = (UnityEngine.Random.Range(-_damageRange, _damageRange) + 100) / 100;
+        int currentDamage = Convert.ToInt32(damage * multiplier); // Nihai hasar
         return currentDamage;
     }
 
