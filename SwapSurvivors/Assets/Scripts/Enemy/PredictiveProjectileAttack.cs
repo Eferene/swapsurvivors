@@ -5,7 +5,7 @@ public class PredictiveProjectileAttack : EnemyAttack
 {
     public override bool Attack(Transform enemyTransform, Transform targetTransform, float damage, float damagePercentage, float range)
     {
-        if(Vector2.Distance(enemyTransform.position, targetTransform.position) <= range) // Menzil kontrolü
+        if(Vector2.Distance(enemyTransform.position + enemyTransform.GetComponent<EnemyController>().enemyData.attackOffset, targetTransform.position) <= range) // Menzil kontrolü
         {
             EnemyController enemyController = enemyTransform.GetComponent<EnemyController>();
             if (enemyController != null && enemyController.enemyData.projectilePrefab != null)

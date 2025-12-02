@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -8,13 +9,17 @@ public class EnemyController : MonoBehaviour
     private EnemyAttack attackType;
     Rigidbody2D rb;
     Transform playerTransform;
-    Material flashMat;
     Material mainMat;
+    Transform wsCanvas;
 
     // Cooldown
     [SerializeField] float lastAttackTime;
     [SerializeField] bool canAttack = true;
     public bool isAttacking = false;
+
+    // Resources
+    Material flashMat;
+    TextMeshProUGUI damageTMP;
     void Start()
     {
         currentHealth = enemyData.baseHealth;
@@ -23,7 +28,9 @@ public class EnemyController : MonoBehaviour
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null) playerTransform = playerObj.transform;
         flashMat = Resources.Load<Material>("HitFlashMaterial");
+        damageTMP = Resources.Load<TextMeshProUGUI>("Damage Text");
         mainMat = GetComponent<SpriteRenderer>().material;
+        wsCanvas = GameObject.FindGameObjectWithTag("WorldSpaceCanvas").transform;
     }
 
     void Update()
@@ -37,7 +44,7 @@ public class EnemyController : MonoBehaviour
         // Basit saldırı
         if (attackType != null && canAttack && !isAttacking)
         {
-            bool attackSuccessful = attackType.Attack(transform, GameObject.FindGameObjectWithTag("Player").transform, enemyData.attackDamage, enemyData.attackDamagePercentage, enemyData.attackRange);
+            bool attackSuccessful = attackType.Attack(transform, playerTransform, enemyData.attackDamage, enemyData.attackDamagePercentage, enemyData.attackRange);
             if(attackSuccessful)
             {
                 lastAttackTime = Time.time;
@@ -92,14 +99,14 @@ public class EnemyController : MonoBehaviour
     }
 
     void KeepDistanceMovement()
-    {
+    {        
         if (playerTransform == null)
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null) playerTransform = playerObj.transform;
         }
 
-        if (rb != null && playerTransform != null && enemyData != null && Vector2.Distance(rb.position, playerTransform.position) > enemyData.attackRange - 0.3f)
+        if (rb != null && playerTransform != null && enemyData != null && Vector2.Distance(rb.position, playerTransform.position) > enemyData.attackRange)
         {
             if(isAttacking) return;
 
@@ -115,6 +122,14 @@ public class EnemyController : MonoBehaviour
     {
         currentHealth -= damage;
         StartCoroutine(Flash());
+
+        TextMeshProUGUI newText = Instantiate(damageTMP, wsCanvas);
+        newText.text = "-" + damage;
+        newText.color = Color.white;
+        newText.transform.position = transform.position + new Vector3(0, 1.5f, 0f);
+        Destroy(newText.gameObject, 1f);
+        StartCoroutine(MoveUp(newText));
+        
         if (currentHealth <= 0)
         {
             float min = enemyData.scoreGain * (1f - enemyData.scoreGainPercentage / 100f);
@@ -134,9 +149,26 @@ public class EnemyController : MonoBehaviour
         GetComponent<SpriteRenderer>().material = mainMat;
     }
 
+    IEnumerator MoveUp(TextMeshProUGUI t)
+    {
+        Vector3 start = t.transform.position;
+        Vector3 end = start + new Vector3(0, 1f, 0);
+        float lifeTime = 1f;
+        float time = 0;
+
+        while (time < lifeTime)
+        {
+            if(t == null) break;
+            time += Time.deltaTime;
+            t.transform.position = Vector3.Lerp(start, end, time / lifeTime);
+            yield return null;
+        }
+    }
+
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, enemyData != null ? enemyData.attackRange : 1f);
+        Gizmos.DrawWireSphere(transform.position + enemyData.attackOffset, enemyData != null ? enemyData.attackRange : 1f);
     }
 }

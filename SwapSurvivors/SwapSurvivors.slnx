@@ -1,3 +1,6 @@
 ﻿<Solution>
+  <Project Path="NaughtyAttributes.Test.csproj" />
+  <Project Path="NaughtyAttributes.Core.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="NaughtyAttributes.Editor.csproj" />
 </Solution>

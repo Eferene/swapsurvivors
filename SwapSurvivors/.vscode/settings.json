@@ -60,12 +60,37 @@
         "*.asset": "yaml",
         "*.meta": "yaml",
         "*.prefab": "yaml",
-        "*.unity": "yaml",
+        "*.unity": "yaml"
     },
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "SwapSurvivors.slnx"
+    "dotnet.defaultSolution": "SwapSurvivors.slnx",
+
+    // --- Suggestion / IntelliSense settings ---
+    "editor.squickSuggestions": { "other": true, "comments": false, "strings": true },
+    "editor.suggestOnTriggerCharacters": true,
+    "editor.inlineSuggest.enabled": true,
+    "editor.acceptSuggestionOnEnter": "on",
+    "editor.parameterHints.enabled": true,
+    "editor.tabCompletion": "on",
+    "editor.suggestSelection": "recentlyUsedByPrefix",
+
+    // OmniSharp (C# language server) settings for Unity
+    "omnisharp.useModernNet": true,
+    "omnisharp.loggingLevel": "information",
+
+    // Improve watching for Unity project
+    "files.watcherExclude": {
+        "**/Library/**": true,
+        "**/Temp/**": true
+    },
+
+    // Use C# formatter if available
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-dotnettools.csharp"
+    }
 }
+

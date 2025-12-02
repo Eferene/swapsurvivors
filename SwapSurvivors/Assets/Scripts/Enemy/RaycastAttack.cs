@@ -8,7 +8,7 @@ public class RaycastAttack : EnemyAttack
     {
         int mask = LayerMask.GetMask("Player");
 
-        Vector2 origin = enemyTransform.position;
+        Vector2 origin = enemyTransform.position + enemyTransform.GetComponent<EnemyController>().enemyData.attackOffset;
         Vector2 dir = (targetTransform.position - enemyTransform.position).normalized;
 
         RaycastHit2D hit = Physics2D.Raycast(origin, dir, range, mask);

@@ -1,5 +1,10 @@
 {
-    "recommendations": [
-      "visualstudiotoolsforunity.vstuc"
-    ]
+  "recommendations": [
+    "visualstudiotoolsforunity.vstuc",
+    "ms-dotnettools.csharp",
+    "VisualStudioExptTeam.vscodeintellicode",
+    "github.copilot",
+    "Unity.unity-debug",
+    "kleber-swf.unity-code-snippets"
+  ]
 }

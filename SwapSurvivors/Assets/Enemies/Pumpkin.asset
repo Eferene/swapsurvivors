@@ -18,8 +18,9 @@ MonoBehaviour:
   enemyPrefab: {fileID: 6755691749114657334, guid: d91644b07c4f89e4aa4712e3ef608ed4, type: 3}
   attackDamage: 50
   attackDamagePercentage: 10
-  attackRange: 2
+  attackRange: 1.5
   attackCooldown: 1
+  attackOffset: {x: -0.015, y: 0.005, z: 0}
   projectilePrefab: {fileID: 0}
   projectileSpeed: 0
   scoreGain: 25
