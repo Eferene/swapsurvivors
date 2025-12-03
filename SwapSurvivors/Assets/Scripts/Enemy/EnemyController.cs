@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -20,6 +21,7 @@ public class EnemyController : MonoBehaviour
     // Resources
     Material flashMat;
     TextMeshProUGUI damageTMP;
+    GameObject effectPrefab;
     void Start()
     {
         currentHealth = enemyData.baseHealth;
@@ -31,6 +33,10 @@ public class EnemyController : MonoBehaviour
         damageTMP = Resources.Load<TextMeshProUGUI>("Damage Text");
         mainMat = GetComponent<SpriteRenderer>().material;
         wsCanvas = GameObject.FindGameObjectWithTag("WorldSpaceCanvas").transform;
+        effectPrefab = Resources.Load<GameObject>("DeathEffect");
+
+        var mainSettings = effectPrefab.GetComponent<ParticleSystem>().main;
+        mainSettings.startColor = new ParticleSystem.MinMaxGradient(enemyData.colors[0], enemyData.colors[1]);
     }
 
     void Update()
@@ -138,6 +144,8 @@ public class EnemyController : MonoBehaviour
             int scoreGain = Mathf.RoundToInt(fScoreGain);
             PlayerStats.Instance.AddScore(scoreGain);
             UIController.Instance.UpdateScoreText();
+            GameObject newEffect = Instantiate(effectPrefab, transform.position, Quaternion.identity);
+            Destroy(newEffect, 1f);
             Destroy(gameObject);
         }
     }

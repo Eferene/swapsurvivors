@@ -39,6 +39,9 @@ public class EnemyData : ScriptableObject
     [Header("Stats Values")]
     public int scoreGain;
     public float scoreGainPercentage = 10; // +- oranını belirler.
+
+    [Header("Effects")]
+    public Color[] colors = new Color[2];
 }
 
 public enum ThrowDamageType
