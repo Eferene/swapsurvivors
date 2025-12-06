@@ -11,6 +11,7 @@ public abstract class BaseCharacterController : MonoBehaviour
     // --- Movement ---
     private Vector2 moveInput;
     protected float playerSpeed;
+    private float lastStepTime = 0f;
 
     // --- Combat ---
     private float lastAttackTime = 0f;
@@ -52,6 +53,12 @@ public abstract class BaseCharacterController : MonoBehaviour
     protected virtual void FixedUpdate()
     {
         rb.linearVelocity = new Vector2(moveInput.x * playerSpeed, moveInput.y * playerSpeed);
+
+        if(rb.linearVelocity != Vector2.zero && Time.time >= lastStepTime + 0.2f)
+        {
+            AudioManager.Instance.PlayPlayerStepSFX();
+            lastStepTime = Time.time;
+        }
     }
 
     // --- Abstract Methods ---

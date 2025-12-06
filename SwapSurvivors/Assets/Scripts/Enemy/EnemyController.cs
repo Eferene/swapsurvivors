@@ -136,6 +136,7 @@ public class EnemyController : MonoBehaviour
     {
         currentHealth -= damage;
         StartCoroutine(Flash());
+        AudioManager.Instance.PlayEnemyHurtSFX();
 
         TextMeshProUGUI newText = Instantiate(damageTMP, wsCanvas);
         newText.text = damage.ToString();
