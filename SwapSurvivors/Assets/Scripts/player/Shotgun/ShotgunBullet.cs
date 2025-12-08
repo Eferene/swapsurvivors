@@ -7,34 +7,38 @@ public class ShotgunBullet : MonoBehaviour
     private float bulletRange;
     private float bulletExplosionRange;
     private float bulletExplosionDamage;
+    private float characterLevel;
     private Vector3 startPosition;
-    private PlayerManager playerManager;
+
+    Rigidbody2D rb;
 
     // Bu metod, mermi özelliklerini ayarlamak için çağrılır
-    public void Setup(float bulletDamage, float bulletSpeed, float bulletRange, float bulletExplosionRange, float bulletExplosionDamage)
+    public void Setup(float bulletDamage, float bulletSpeed, float bulletRange, float bulletExplosionRange, float bulletExplosionDamage, int characterLevel)
     {
         this.bulletDamage = bulletDamage;
         this.bulletRange = bulletRange;
         this.bulletExplosionRange = bulletExplosionRange;
         this.bulletExplosionDamage = bulletExplosionDamage;
+        this.characterLevel = characterLevel;
         startPosition = transform.position;
 
+        rb = GetComponent<Rigidbody2D>();
         // Hız ayarı
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null)
-        {
-            bulletSpeed = bulletSpeed * Random.Range(0.8f, 1.2f);
             rb.linearVelocity = transform.right * bulletSpeed;
-        }
+    }
+
+    private void ReturnToPool(GameObject obj)
+    {
+        rb.linearVelocity = Vector2.zero;
+        obj.SetActive(false);
     }
 
     private void Update()
     {
         // Mermi menzilini aştıysa yok et
         if (Vector3.Distance(startPosition, transform.position) >= bulletRange)
-        {
-            Destroy(gameObject);
-        }
+            ReturnToPool(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -49,19 +53,19 @@ public class ShotgunBullet : MonoBehaviour
                 enemyController.TakeDamage(bulletDamage);
                 //Debug.Log($"{collision.name} gelen {bulletDamage} hasarı yedi.");
 
-                if (playerManager.CharacterLevel == 3)
+                if (characterLevel == 3)
                     BulletExplosion();
 
-                Destroy(gameObject);
+                ReturnToPool(gameObject);
             }
         }
 
         // Mermi engelle çarpıştığında yok et
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Obstacle"))
         {
-            if (playerManager.CharacterLevel == 3)
+            if (characterLevel == 3)
                 BulletExplosion();
-            Destroy(gameObject);
+            ReturnToPool(gameObject);
         }
     }
 
@@ -76,7 +80,7 @@ public class ShotgunBullet : MonoBehaviour
                 if (enemy.TryGetComponent(out EnemyController enemyController))
                 {
                     enemyController.TakeDamage(bulletExplosionDamage);
-                    Debug.Log($"{enemy.name} gelen {bulletExplosionDamage} hasarı yedi.");
+                    //Debug.Log($"{enemy.name} gelen {bulletExplosionDamage} hasarı yedi.");
                 }
             }
         }

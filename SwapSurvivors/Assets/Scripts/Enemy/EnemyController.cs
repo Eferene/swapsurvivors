@@ -152,7 +152,6 @@ public class EnemyController : MonoBehaviour
             float fScoreGain = Random.Range(min, max);
             int scoreGain = Mathf.RoundToInt(fScoreGain);
             playerManager.AddScore(scoreGain);
-            UIController.Instance.UpdateScoreText();
             GameObject newEffect = Instantiate(effectPrefab, transform.position, Quaternion.identity);
 
             var mainSettings = newEffect.GetComponent<ParticleSystem>().main;

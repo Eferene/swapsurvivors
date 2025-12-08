@@ -27,6 +27,7 @@ public class PlayerManager : MonoBehaviour
 
     // --- Events (UI) ---
     public event Action<float, float> OnHealthChanged; // (Current, Max) gönderir
+    public event Action<int> OnScoreChanged; // (New Score) gönderir
 
     private void Awake()
     {
@@ -100,6 +101,7 @@ public class PlayerManager : MonoBehaviour
     public void AddScore(int amount)
     {
         Score += amount;
+        OnScoreChanged?.Invoke(Score);
     }
 
     public void IncreaseCharacterLevel(int amount)

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47194f9f0675d204aa42e5fcb62294a6, type: 3}
+  m_Name: BoomerangStats
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
+  BaseMaxHealth: 200
+  BaseDamage: 100
+  BaseSpeed: 6
+  BaseAttackCooldown: 1
+  BaseRange: 10
+  DamageRangePercentage: 10

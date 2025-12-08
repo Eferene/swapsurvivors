@@ -24,8 +24,6 @@ public class ScyhteCharacter : BaseCharacterController
     private List<GameObject> scythePool = new List<GameObject>(); // Tırpan havuzu
     ContactFilter2D filter = new ContactFilter2D();
 
-    private Coroutine levelTwoComboCoroutine;
-
     // --- Unity Methods ---
     protected override float GetCooldown() => playerManager.CurrentCooldown;
 
@@ -163,7 +161,7 @@ public class ScyhteCharacter : BaseCharacterController
     private void LevelTwoAttack()
     {
         // Yeni combo başlat
-        levelTwoComboCoroutine = StartCoroutine(LevelTwoComboRoutine());
+        StartCoroutine(LevelTwoComboRoutine());
     }
 
     private IEnumerator LevelTwoComboRoutine()
@@ -180,8 +178,6 @@ public class ScyhteCharacter : BaseCharacterController
         DoScytheHit(false);
         GameObject leftScythe = SpawnScythe(false);
         StartCoroutine(ReturnToPoolDelayed(leftScythe, attackAnimationDuration));
-
-        levelTwoComboCoroutine = null;
     }
 
     private void LevelThreeAttack()

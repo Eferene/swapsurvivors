@@ -15,11 +15,9 @@ public class UIController : MonoBehaviour
     {
         if (Instance == null)
         {
+            Instance = this;
             GameObject playerobj = GameObject.FindWithTag("Player");
             playerManager = playerobj.GetComponent<PlayerManager>();
-            Instance = this;
-            UpdateScoreText();
-            UpdateHealthSlider();
         }
         else
         {
@@ -27,12 +25,30 @@ public class UIController : MonoBehaviour
         }
     }
 
-    public void UpdateScoreText()
+    private void OnEnable()
     {
-        scoreText.text = "Score: " + playerManager.Score;
+        playerManager.OnHealthChanged += UpdateHealthSlider;
+        playerManager.OnScoreChanged += UpdateScoreText;
     }
 
-    public void UpdateHealthSlider()
+    private void OnDisable()
+    {
+        playerManager.OnHealthChanged -= UpdateHealthSlider;
+        playerManager.OnScoreChanged -= UpdateScoreText;
+    }
+
+    private void Start()
+    {
+        UpdateScoreText(playerManager.Score);
+        UpdateHealthSlider(playerManager.CurrentHealth, playerManager.MaxHealth);
+    }
+
+    public void UpdateScoreText(int score)
+    {
+        scoreText.text = "Score: " + score;
+    }
+
+    public void UpdateHealthSlider(float maxHealt, float currentHealt)
     {
         healthText.text = playerManager.CurrentHealth + "/" + playerManager.MaxHealth;
         healthImage.fillAmount = playerManager.CurrentHealth / playerManager.MaxHealth;

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class ShotgunCharacter : BaseCharacterController
 {
@@ -16,12 +18,34 @@ public class ShotgunCharacter : BaseCharacterController
     [SerializeField] private LayerMask enemyLayer;
 
     private Transform currentTarget;
+    private Transform bulletsParent;
+    private List<GameObject> bulletPool = new List<GameObject>(); // Mermi havuzu
+
+    private void Start()
+    {
+        bulletsParent = new GameObject("BULLETS POOL").transform;
+    }
 
     protected override float GetCooldown() => playerManager.CurrentCooldown;
 
-    protected override void Awake()
+    protected override void Update()
     {
-        base.Awake();
+        base.Update();
+
+        // En yakın düşmanı bulur
+        FindClosestEnemy();
+
+        // Hedef varsa silahı hedefe döndürür
+        if (currentTarget != null)
+        {
+            RotateWeaponToTarget();
+        }
+    }
+
+    protected override void ApplyAttack()
+    {
+        if (currentTarget != null)
+            base.ApplyAttack();
     }
 
     protected override void Attack()
@@ -43,46 +67,50 @@ public class ShotgunCharacter : BaseCharacterController
         }
     }
 
-    protected override void Update()
+    private GameObject GetBulletFromPool(Quaternion bulletRotation)
     {
-        base.Update();
-
-        // En yakın düşmanı bulur
-        FindClosestEnemy();
-
-        // Hedef varsa silahı hedefe döndürür
-        if (currentTarget != null)
+        // Havuzu tara
+        foreach (GameObject obj in bulletPool)
         {
-            RotateWeaponToTarget();
+            // Obje kullanılmıyorsa
+            if (!obj.activeInHierarchy)
+            {
+                obj.SetActive(true);
+                return obj;
+            }
         }
-    }
 
-    protected override void FixedUpdate()
-    {
-        base.FixedUpdate();
-    }
-
-    protected override void ApplyAttack()
-    {
-        if (currentTarget != null)
-            base.ApplyAttack();
+        // Hepsi kullanılıyorsa yeni obje oluştur
+        GameObject newBullet = Instantiate(BulletPrefab, FirePoint.position, bulletRotation, bulletsParent);
+        bulletPool.Add(newBullet);
+        return newBullet;
     }
 
     private void FireBullet()
     {
         if (currentTarget == null) return;
 
-        Quaternion aimRotation = FirePoint.rotation;
-        float randomZ = Random.Range(-spreadAngle / 2f, spreadAngle / 2f);
-        Quaternion bulletRotation = Quaternion.Euler(0, 0, aimRotation.eulerAngles.z + randomZ);
+        float startAngle = -spreadAngle / 2f;
+        float angleStep = spreadAngle / (bulletCount - 1);
 
-        GameObject bullet = Instantiate(BulletPrefab, FirePoint.position, bulletRotation);
-        bullet.transform.parent = this.transform;
-
-        // Bullet bileşenini alıp gerekli ayarları yapar
-        if (bullet.TryGetComponent(out ShotgunBullet bulletScript))
+        for (int i = 0; i < bulletCount; i++)
         {
-            bulletScript.Setup(playerManager.CurrentDamage, bulletSpeed, playerManager.CurrentSpeed, bulletExplosionRadius, (playerManager.CurrentDamage / 2));
+            float currentAngle = startAngle + (angleStep * i);
+
+            Quaternion aimRotation = FirePoint.rotation;
+            Quaternion bulletRotation = Quaternion.Euler(0, 0, aimRotation.eulerAngles.z + currentAngle);
+
+            GameObject bullet = GetBulletFromPool(bulletRotation);
+
+            bullet.transform.position = FirePoint.position;
+            bullet.transform.rotation = bulletRotation;
+
+            // Bullet bileşenini alıp gerekli ayarları yapar
+            if (bullet.TryGetComponent(out ShotgunBullet bulletScript))
+            {
+                bulletScript.Setup(playerManager.CurrentDamage, bulletSpeed, playerManager.CurrentSpeed, bulletExplosionRadius,
+                    (playerManager.CurrentDamage / 2), playerManager.CharacterLevel);
+            }
         }
     }
 
@@ -133,28 +161,28 @@ public class ShotgunCharacter : BaseCharacterController
 
     private void LevelOneAttack()
     {
-        for (int i = 0; i < bulletCount; i++)
-            FireBullet();
+        FireBullet();
     }
 
     private void LevelTwoAttack()
     {
-        for (int i = 0; i < bulletCount; i++)
-            FireBullet();
-        Invoke(nameof(DelayedSecondSalvo), 0.2f);
-    }
-
-    private void DelayedSecondSalvo()
-    {
-        for (int i = 0; i < bulletCount; i++)
-            FireBullet();
+        StartCoroutine(DobuleShot(0.2f));
     }
 
     private void LevelThreeAttack()
     {
-        for (int i = 0; i < bulletCount; i++)
-            FireBullet();
-        Invoke(nameof(DelayedSecondSalvo), 0.2f);
+        StartCoroutine(DobuleShot(0.15f));
+    }
+
+    private IEnumerator DobuleShot(float t)
+    {
+        // İlk salvo
+        FireBullet();
+
+        yield return new WaitForSeconds(t);
+
+        // İkinci salvo
+        FireBullet();
     }
 
     private void OnDrawGizmosSelected()
