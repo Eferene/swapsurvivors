@@ -107,6 +107,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BoomerangController
   projectilePrefab: {fileID: 3780339541632740, guid: 3923efc95072db94f947b7c158d5c093, type: 3}
   projectileCount: 3
+  rotationSpeed: 720
+  bounceRange: 7
+  maxBounceCount: 5
+  bounceSpeedMultiplier: 1
 --- !u!50 &-7834572805438185740
 Rigidbody2D:
   serializedVersion: 5

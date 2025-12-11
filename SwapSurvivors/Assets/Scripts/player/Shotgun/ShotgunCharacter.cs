@@ -109,7 +109,7 @@ public class ShotgunCharacter : BaseCharacterController
             if (bullet.TryGetComponent(out ShotgunBullet bulletScript))
             {
                 bulletScript.Setup(playerManager.GiveDamageCharacter(), bulletSpeed, playerManager.CurrentSpeed, bulletExplosionRadius,
-                    (playerManager.CurrentDamage / 2), playerManager.CharacterLevel);
+                    (playerManager.GiveDamageCharacter() / 2), playerManager.CharacterLevel);
             }
         }
     }

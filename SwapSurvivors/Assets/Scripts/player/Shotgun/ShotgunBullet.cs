@@ -48,7 +48,6 @@ public class ShotgunBullet : MonoBehaviour
         {
             if (collision.TryGetComponent(out EnemyController enemyController))
             {
-                Debug.Log(collision);
                 if (enemyController.IsDead) return;
                 enemyController.TakeDamage(bulletDamage);
                 //Debug.Log($"{collision.name} gelen {bulletDamage} hasarı yedi.");
