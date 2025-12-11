@@ -39,7 +39,7 @@ public class BoomerangController : MonoBehaviour
 
     private void Awake() => rb = GetComponent<Rigidbody2D>();
 
-    private void Update()
+    private void FixedUpdate()
     {
         transform.Rotate(0, 0, -rotationSpeed * Time.deltaTime); // Bumerang dönme
 
@@ -233,6 +233,7 @@ public class BoomerangController : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         isReturning = false;
         obj.SetActive(false);
+        rb.linearVelocity = Vector2.zero;
     }
 
     private void SpawnProjectiles()

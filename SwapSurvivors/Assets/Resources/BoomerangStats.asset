@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BoomerangStats
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   BaseMaxHealth: 200
-  BaseDamage: 100
+  BaseDamage: 35
   BaseSpeed: 6
-  BaseAttackCooldown: 1
+  BaseAttackCooldown: 0.8
   BaseRange: 10
   DamageRangePercentage: 10

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPattern
   enemySequence:
   - enemyData: {fileID: 11400000, guid: 24e2696f564f68a4fb25be1c1c05526f, type: 2}
-    quantity: 1
+    quantity: 3
   - enemyData: {fileID: 11400000, guid: 2b5e2582eda1c6d428b5d6c980a9ee19, type: 2}
     quantity: 1
   - enemyData: {fileID: 11400000, guid: b7f11189464f7cd44bf0e0ec8c726ef0, type: 2}
-    quantity: 1
+    quantity: 2
