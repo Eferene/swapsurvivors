@@ -27,6 +27,8 @@ public class BoomerangController : MonoBehaviour
     private int currentBounceCount = 0;
     private Transform currentBounceTarget;
     private List<GameObject> hitEnemiesInChain = new List<GameObject>(); // Aynı turda vurulanları tutar
+    private float bounceTimer = 0f;
+    private float bounceTimeout = 2f;
 
     // References
     private GameObject ownerObject;
@@ -131,6 +133,8 @@ public class BoomerangController : MonoBehaviour
         // Eğer maksimum sekme sayısına ulaştıysak dön
         if (currentBounceCount >= maxBounceCount) return false;
 
+        bounceTimer = 0f; // Zamanlayıcıyı sıfırla
+
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, bounceRange);
         float closestDist = Mathf.Infinity;
         Transform potentialTarget = null;
@@ -167,6 +171,15 @@ public class BoomerangController : MonoBehaviour
 
     private void HandleBounceMovement()
     {
+        bounceTimer += Time.fixedDeltaTime;
+
+        if (bounceTimer > bounceTimeout)
+        {
+            // Zaman aşımı oldu, geri dön
+            StartReturn();
+            return;
+        }
+
         if (currentBounceTarget == null)
         {
             // Hedef yolda öldüyse veya kaybolduysa yenisini ara veya dön

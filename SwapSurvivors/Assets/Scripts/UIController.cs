@@ -41,7 +41,7 @@ public class UIController : MonoBehaviour
     private void Start()
     {
         UpdateScoreText(playerManager.Score);
-        UpdateHealthSlider(playerManager.CurrentHealth, playerManager.MaxHealth);
+        UpdateHealthSlider(playerManager.CurrentHealth, playerManager.MaxHealth, 1f);
     }
 
     public void UpdateScoreText(int score)
@@ -49,7 +49,7 @@ public class UIController : MonoBehaviour
         scoreText.text = "Score: " + score;
     }
 
-    public void UpdateHealthSlider(float maxHealt, float currentHealt)
+    public void UpdateHealthSlider(float maxHealt, float currentHealt, float d)
     {
         healthText.text = playerManager.CurrentHealth + "/" + playerManager.MaxHealth;
         healthImage.fillAmount = playerManager.CurrentHealth / playerManager.MaxHealth;
@@ -57,7 +57,7 @@ public class UIController : MonoBehaviour
 
     public void OpenAndClosePanel(GameObject panel)
     {
-        if(panel.activeInHierarchy)
+        if (panel.activeInHierarchy)
         {
             panel.SetActive(false);
             Time.timeScale = 1;
@@ -72,7 +72,7 @@ public class UIController : MonoBehaviour
     public IEnumerator StartWaveTimer(int duration)
     {
         int minutes, seconds;
-        while(duration > 0)
+        while (duration > 0)
         {
             minutes = Mathf.FloorToInt(duration / 60);
             seconds = Mathf.FloorToInt(duration % 60);

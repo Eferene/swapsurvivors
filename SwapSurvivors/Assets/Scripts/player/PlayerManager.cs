@@ -31,7 +31,7 @@ public class PlayerManager : MonoBehaviour
     public int Score { get; private set; }
 
     // --- Events (UI) ---
-    public event Action<float, float> OnHealthChanged; // (Current, Max) gönderir
+    public event Action<float, float, float> OnHealthChanged; // (Current, Max, Damage) gönderir
     public event Action<int> OnScoreChanged; // (New Score) gönderir
     public event Action<int> OnLevelChanged; // (New Level) gönderir
 
@@ -70,10 +70,11 @@ public class PlayerManager : MonoBehaviour
     public void TakeDamageCharacter(float amount)
     {
         CurrentHealth -= amount;
+
         if (CurrentHealth < 0) CurrentHealth = 0;
 
         // UI'a haber
-        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth, amount);
 
         if (CurrentHealth <= 0)
         {
@@ -85,7 +86,7 @@ public class PlayerManager : MonoBehaviour
     {
         CurrentHealth += amount;
         if (CurrentHealth > MaxHealth) CurrentHealth = MaxHealth;
-        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth, amount);
     }
 
     // --- Damage Management Methods ---
