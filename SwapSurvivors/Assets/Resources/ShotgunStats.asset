@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: ShotgunStats
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   BaseMaxHealth: 250
-  BaseDamage: 50
+  BaseDamage: 1000
   BaseSpeed: 5
-  BaseAttackCooldown: 2
+  BaseAttackCooldown: 0.1
   BaseRange: 5
   DamageRangePercentage: 10
   InitialDamageMultiplier: 1
   InitialRangeMultiplier: 1
   InitialSpeedMultiplier: 1
   InitialAttackSpeedMultiplier: 1
-  InitialCritChance: 1
+  InitialCritChance: 0.5
   InitialCritDamageMultiplier: 2
   InitialArmorPercentage: 0
-  InitialLifeStealRate: 100
+  InitialLifeStealRate: 500
   InitialHealthRegen: 0

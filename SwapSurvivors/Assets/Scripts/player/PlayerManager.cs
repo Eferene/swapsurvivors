@@ -16,7 +16,7 @@ public class PlayerManager : MonoBehaviour
     public float CurrentRange { get; private set; }
 
     // --- Level & Score ---
-    public int CharacterLevel { get; private set; } = 3;
+    public int CharacterLevel { get; private set; } = 2;
     public int Score { get; private set; }
 
     // --- Upgrade Stats --- Kod üzerinde çarpan olarak kullanılır (x1.2 = +20%)
@@ -113,7 +113,6 @@ public class PlayerManager : MonoBehaviour
         float fluctuation = baseStats.DamageRangePercentage;
         float randomFactor = (UnityEngine.Random.Range(-fluctuation, fluctuation) + 100) / 100;
         damage *= randomFactor;
-        damage = Mathf.RoundToInt(damage);
 
         if (UnityEngine.Random.value <= CriticalHitChance)
         {
@@ -122,6 +121,8 @@ public class PlayerManager : MonoBehaviour
         }
         else
             OnDamageHitOccurred?.Invoke(false);
+
+        damage = Mathf.RoundToInt(damage);
 
         return damage;
     }

@@ -14,15 +14,13 @@ public class ShotgunBullet : MonoBehaviour
     private Rigidbody2D rb;
 
     // Bu metod, mermi özelliklerini ayarlamak için çağrılır
-    public void Setup(PlayerManager playerManager, float bulletDamage, float bulletSpeed, float bulletRange, float bulletExplosionRadius, int characterLevel)
+    public void Setup(PlayerManager playerManager, float bulletSpeed, float bulletRange, float bulletExplosionRadius, int characterLevel)
     {
         this.playerManager = playerManager;
-        this.bulletDamage = bulletDamage;
         this.bulletRange = bulletRange;
         this.bulletExplosionRadius = bulletExplosionRadius;
         this.characterLevel = characterLevel;
 
-        bulletExplosionDamage = bulletDamage / 2;
         startPosition = transform.position;
 
         rb = GetComponent<Rigidbody2D>();
@@ -52,6 +50,7 @@ public class ShotgunBullet : MonoBehaviour
             if (collision.TryGetComponent(out EnemyController enemyController))
             {
                 if (enemyController.IsDead) return;
+                bulletDamage = playerManager.CalculateDamage();
                 enemyController.TakeDamage(bulletDamage);
                 playerManager.ApplyOnHitEffects(bulletDamage);
 
@@ -81,6 +80,7 @@ public class ShotgunBullet : MonoBehaviour
             {
                 if (enemy.TryGetComponent(out EnemyController enemyController))
                 {
+                    bulletExplosionDamage = playerManager.CalculateDamage() * 0.5f;
                     enemyController.TakeDamage(bulletExplosionDamage);
                     playerManager.ApplyOnHitEffects(bulletExplosionDamage);
                 }

@@ -108,7 +108,7 @@ public class ShotgunCharacter : BaseCharacterController
             // Bullet bileşenini alıp gerekli ayarları yapar
             if (bullet.TryGetComponent(out ShotgunBullet bulletScript))
             {
-                bulletScript.Setup(playerManager, playerManager.CalculateDamage(), bulletSpeed, playerManager.CurrentRange, bulletExplosionRadius, playerManager.CharacterLevel);
+                bulletScript.Setup(playerManager, bulletSpeed, playerManager.CurrentRange, bulletExplosionRadius, playerManager.CharacterLevel);
             }
         }
     }

@@ -24,6 +24,8 @@ public class EnemyController : MonoBehaviour
     // Exploding
     public bool isExploding = false;
 
+    private bool isCritical = false;
+
     [Header("Resources")]
     [SerializeField] Material flashMat;
     [SerializeField] TextMeshProUGUI damageTMP;
@@ -51,6 +53,7 @@ public class EnemyController : MonoBehaviour
         canAttack = true;
         isAttacking = false;
         spriteRenderer.material = mainMat;
+        playerManager.OnDamageHitOccurred += IsCritical;
     }
 
     void Update()
@@ -147,23 +150,23 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage, bool isCritical)
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        if(!IsDead) StartCoroutine(Flash());
+        if (!IsDead) StartCoroutine(Flash());
         AudioManager.Instance.PlayEnemyHurtSFX();
 
         TextMeshProUGUI newText = Instantiate(damageTMP, wsCanvas);
         newText.text = damage.ToString();
-        newText.color = Color.white;
-        if(isCritical) newText.color = Color.red;
+        if (isCritical) newText.color = Color.red;
+        else newText.color = Color.white;
         newText.transform.position = transform.position + new Vector3(0, 1.5f, 0f);
 
         if (currentHealth <= 0)
-        {
             Die();
-        }
     }
+
+    private void IsCritical(bool critical) => isCritical = critical;
 
     private void Die()
     {
