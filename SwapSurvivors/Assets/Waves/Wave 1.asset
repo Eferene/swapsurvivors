@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WaveConfig
   enemiesToSpawn:
   - {fileID: 11400000, guid: d49e05c10b885cc49ba682f8f3ffcb9a, type: 2}
+  - {fileID: 11400000, guid: 5946f80fa1fb6cc49b52310ef629d0bd, type: 2}
   difficultyMultiplier: 1
-  waveDurationSec: 97
+  waveDurationSec: 15

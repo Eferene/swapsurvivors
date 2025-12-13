@@ -20,8 +20,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float lastAttackTime;
     [SerializeField] private bool canAttack = true;
     public bool isAttacking = false;
-
-    // Exploding
     public bool isExploding = false;
 
     private bool isCritical = false;

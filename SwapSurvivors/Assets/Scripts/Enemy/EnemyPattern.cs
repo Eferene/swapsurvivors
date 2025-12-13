@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class EnemyPattern : ScriptableObject
 {
     public List<EnemyPatternObject> enemySequence = new List<EnemyPatternObject>();
+    public float spawningDurationSec = 1;
 }
 
 [System.Serializable]

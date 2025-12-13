@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Enemy Pattern 2
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPattern
   enemySequence:
-  - enemyData: {fileID: 11400000, guid: 24e2696f564f68a4fb25be1c1c05526f, type: 2}
-    quantity: 8
+  - enemyData: {fileID: 11400000, guid: bd2c426ae3eefd246af1e4be4cf70506, type: 2}
+    quantity: 1
+  spawningDurationSec: 5

@@ -8,6 +8,7 @@ TagManager:
   - UIManager
   - WorldSpaceCanvas
   - Enemies
+  - WaveController
   layers:
   - Default
   - TransparentFX

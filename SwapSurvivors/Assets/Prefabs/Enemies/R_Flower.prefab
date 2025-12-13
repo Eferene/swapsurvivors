@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 8485603281901325613}
   - component: {fileID: -3301413716451221918}
   m_Layer: 7
-  m_Name: Ranged_Flower
+  m_Name: R_Flower
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

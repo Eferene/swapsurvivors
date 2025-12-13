@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using TMPro;
-using System;
 
 public class WaveController : MonoBehaviour
 {
@@ -17,10 +16,12 @@ public class WaveController : MonoBehaviour
     public TextMeshProUGUI waveText;
     private int currentWave = 0;
     private bool isEndlessMode = false;
+    public bool isBreakdown;
 
-    public List<EnemyData> enemies = new List<EnemyData>();
+    [Header("Breakdown Elements")]
+    public Transform breakdownGameObjects;
 
-    void Awake()
+    private void Awake()
     {
         if(Instance == null)
         {
@@ -33,62 +34,90 @@ public class WaveController : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         NewWave();
     }
 
-    void NewWave()
+    public void NewWave()
     {
+        StopShopPhase();
+        isBreakdown = false;
         WaveConfig cWave = waves[currentWave];
         waveText.text = "Wave " + (currentWave + 1);
 
         if(!isEndlessMode)
         {
-            StartCoroutine(ExecuteMainWaves(cWave));
+            StartCoroutine(ExecuteMainWave(cWave));
         }
         currentWave++;
     }
 
-
-    IEnumerator ExecuteMainWaves(WaveConfig wave)
+    private IEnumerator ExecuteMainWave(WaveConfig wave)
     {
         StartCoroutine(uiController.StartWaveTimer(wave.waveDurationSec));
-        float timer = 0f;
-        float spawnRate = 1f;
 
-        while (timer < wave.waveDurationSec)
+        foreach(var enemyPattern in wave.enemiesToSpawn)
         {
-            if(wave.enemiesToSpawn.Count > 0)
-            {
-                foreach(var enemyPattern in wave.enemiesToSpawn)
-                {
-                    foreach(var enemySequence in enemyPattern.enemySequence)
-                    {
-                        for(int i = 0; i < enemySequence.quantity; i++)
-                        {
-                            GameObject newEnemy = EnemyPool.Instance.GetEnemyFromPool(enemySequence.enemyData.enemyPrefab);
-                            Vector3 randomPoint = GetRandomPoint();
-                            while(IsVisibleByCamera(randomPoint)) randomPoint = GetRandomPoint();
+            StartCoroutine(ExecuteEnemyPattern(enemyPattern, wave.waveDurationSec));
+        }
 
-                            newEnemy.transform.position = randomPoint;
-                        }
-                    }
+        yield return new WaitForSeconds(wave.waveDurationSec + 0.1f);
+
+        EnemyPool.Instance.ReturnAllEnemiesToPool();
+        StartShopPhase();
+    }
+
+    private IEnumerator ExecuteEnemyPattern(EnemyPattern enemyPattern, float waveDuration)
+    {
+        float timer = 0f;
+
+        while(timer < waveDuration)
+        {
+            yield return new WaitForSeconds(enemyPattern.spawningDurationSec);
+
+            foreach(var enemyPatternObject in enemyPattern.enemySequence)
+            {
+                for(int i = 0; i < enemyPatternObject.quantity; i++)
+                {
+                    GameObject newEnemy = EnemyPool.Instance.GetEnemyFromPool(enemyPatternObject.enemyData.enemyPrefab);
+
+                    Vector3 randomPoint = GetRandomPoint();
+                    while (IsVisibleByCamera(randomPoint)) randomPoint = GetRandomPoint();
+
+                    newEnemy.transform.position = randomPoint;
                 }
             }
 
-            yield return new WaitForSeconds(spawnRate);
-            timer += spawnRate;
+            timer += enemyPattern.spawningDurationSec;
         }
     }
 
-    void OnDrawGizmosSelected()
+    private void StartShopPhase()
+    {
+        isBreakdown = true;
+        waveText.text = "Breakdown";
+        for(int i = 0; i < breakdownGameObjects.childCount; i++)
+        {
+            breakdownGameObjects.GetChild(i).gameObject.SetActive(true);
+        }
+    }
+
+    private void StopShopPhase()
+    {
+        for(int i = 0; i < breakdownGameObjects.childCount; i++)
+        {
+            breakdownGameObjects.GetChild(i).gameObject.SetActive(false);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, radius);
     }
 
-    Vector3 GetRandomPoint()
+    private Vector3 GetRandomPoint()
     {
         float r = Mathf.Sqrt(UnityEngine.Random.Range(0f, 1f)) * radius;
         float angle = UnityEngine.Random.Range(0, Mathf.PI * 2f);
@@ -99,7 +128,7 @@ public class WaveController : MonoBehaviour
         );
     }
 
-    bool IsVisibleByCamera(Vector2 point)
+    private bool IsVisibleByCamera(Vector2 point)
     {
         Vector2 view = Camera.main.WorldToViewportPoint(point);
         return view.x > 0 && view.x < 1 && view.y > 0 && view.y < 1;

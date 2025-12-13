@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public abstract class BaseCharacterController : MonoBehaviour
 {
@@ -15,18 +17,21 @@ public abstract class BaseCharacterController : MonoBehaviour
 
     // --- Combat ---
     private float lastAttackTime = 0f;
+    
+    // --- Interactions ---
+    protected Transform currentObject;
 
     // --- Unity Methods ---
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
         playerManager = GetComponent<PlayerManager>();
 
         controls = new InputActions();
         controls.Player.Move.performed += ctx => { moveInput = ctx.ReadValue<Vector2>(); };
         controls.Player.Move.canceled += ctx => { moveInput = Vector2.zero; };
+        controls.Player.Interaction.performed += OnInteract;
     }
 
     private void OnEnable() => controls.Player.Enable();
@@ -63,6 +68,30 @@ public abstract class BaseCharacterController : MonoBehaviour
             lastStepTime = Time.time;
         }
     }
+
+    protected virtual void OnInteract(InputAction.CallbackContext ctx)
+    {
+        if (currentObject != null)
+        {
+            if(currentObject.TryGetComponent<Shop>(out Shop currentShop))
+            {
+                if (currentShop.playerInside)
+                {
+                    currentShop.OpenAndCloseShop();
+                }
+            }
+            else if(currentObject.TryGetComponent<NewWaveArea>(out NewWaveArea newWaveArea))
+            {
+                if (newWaveArea.playerInside)
+                {
+                    newWaveArea.NewWave();
+                }
+            }
+        }
+    }
+
+    public void SetCurrentObject(Transform obj) => currentObject = obj;
+    public void ClearCurrentObject() => currentObject = null;
 
     // --- Abstract Methods ---
     protected abstract void Attack(); // Saldırı yöntemi, türetilmiş sınıflarda uygulanacak

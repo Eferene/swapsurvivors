@@ -77,4 +77,19 @@ public class EnemyPool : MonoBehaviour
             poolDictionary.Add(key, newQueue);
         }
     }
+
+    public void ReturnAllEnemiesToPool()
+    {
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            GameObject child = transform.GetChild(i).gameObject;
+            if (child.gameObject.activeInHierarchy)
+            {
+                EnemyController enemyController = child.transform.GetComponent<EnemyController>();
+                if(enemyController != null) enemyController.DieEffect();
+
+                ReturnEnemyToPool(child);
+            }
+        }
+    }
 }

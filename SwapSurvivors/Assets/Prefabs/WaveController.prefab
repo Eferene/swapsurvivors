@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1729086141276757880}
   m_Layer: 0
   m_Name: WaveController
-  m_TagString: Untagged
+  m_TagString: WaveController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49,4 +49,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: caa56fbb3114cd946afff1419b9dd27e, type: 2}
   radius: 50
   waveText: {fileID: 0}
+  isBreakdown: 0
   enemies: []
+  shopsParent: {fileID: 0}
